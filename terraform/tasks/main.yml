@@ -1,0 +1,16 @@
+---
+# tasks file for terraform
+
+- name: Ensure unzip is installed
+  ansible.builtin.package:
+    name: unzip
+    state: present
+  tags: [terraform, unzip]
+
+- name: 'Unarchive terraform to {{ tf_installation_dir }}'
+  ansible.builtin.unarchive:
+    src: 'https://releases.hashicorp.com/terraform/{{ tf_version }}/terraform_{{ tf_version }}_linux_amd64.zip'
+    dest: '{{ tf_installation_dir }}'
+    creates: '{{ tf_installation_dir }}/terraform'
+    mode: '0755'
+  tags: [terraform]

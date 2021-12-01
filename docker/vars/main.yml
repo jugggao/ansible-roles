@@ -1,0 +1,22 @@
+---
+# vars file for docker
+
+_docker_ce_requirements:
+  default: ''
+  redhat:
+    - iptables
+docker_ce_requirements: '{{ _docker_ce_requirements[ansible_os_family|lower] | default(_docker_ce_requirements[ansible_os_family|lower]) }}'
+
+_docker_ce_dist:
+  default: '{{ ansible_distribution | lower }}'
+  redhat: &redhat_dist rhel
+docker_ce_dist: "{{ _docker_ce_dist[ansible_distribution|lower] | default(_docker_ce_dist['default'] ) }}"
+
+docker_ce_yum_repositories: 'https://download.docker.com/linux/{{ docker_ce_dist }}/docker-ce.repo'
+
+docker_ce_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+docker_ce_service: docker

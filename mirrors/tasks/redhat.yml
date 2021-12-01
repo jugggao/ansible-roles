@@ -1,0 +1,50 @@
+---
+- name: find all of the repository config file
+  ansible.builtin.find:
+    paths: '/etc/yum.repos.d/'
+    patterns: '.*.repo'
+    use_regex: true
+  register: repos
+
+- name: replace mirrors on centos/redhat
+  block:
+    - name: Comment mirrorlist line in default file
+      ansible.builtin.replace:
+        name: '{{ item.path }}'
+        regexp: '^(mirrorlist=)'
+        replace: '# \1'
+      loop: '{{ repos.files }}'
+
+    - name: Uncomment baseurl line and replace specified url in default file
+      ansible.builtin.replace:
+        name: '{{ item.path }}'
+        regexp: '^#(baseurl=)http://mirror.centos.org'
+        replace: '\1{{ mirror_sites[mirror_site] }}'
+      loop: '{{ repos.files }}'
+
+- name: install epel
+  block:
+    - name: install epel-release
+      ansible.builtin.package:
+        name: epel-release
+        state: present
+
+    - name: Comment mirrorlist line in epel
+      ansible.builtin.replace:
+        name: '{{ item }}'
+        regexp: '^(metalink=)'
+        replace: '# \1'
+      loop:
+        - '/etc/yum.repos.d/epel.repo'
+        - '/etc/yum.repos.d/epel-testing.repo'
+
+    - name: Uncomment baseurl line and replace specified url in epel file
+      ansible.builtin.replace:
+        name: '{{ item }}'
+        regexp: '^#(baseurl=)http://download.fedoraproject.org/pub'
+        replace: '\1{{ mirror_sites[mirror_site] }}'
+      loop:
+        - '/etc/yum.repos.d/epel.repo'
+        - '/etc/yum.repos.d/epel-testing.repo'
+  notify:
+    - yum update cache

@@ -1,0 +1,18 @@
+---
+- name: extract and register codename on debian
+  ansible.builtin.shell: |
+    set -o pipefail
+    lsb_release -c | awk '{print $2}'
+  args:
+    executable: /bin/bash
+  register: codename
+  changed_when: false
+
+- name: Replace mirror config file on debian
+  ansible.builtin.template:
+    src: sources.list.j2
+    dest: /etc/apt/sources.list
+    mode: 0644
+    owner: root
+    group: root
+  notify: apt update

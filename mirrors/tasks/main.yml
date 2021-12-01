@@ -1,0 +1,5 @@
+---
+# tasks file for mirrors
+
+- name: Replace software mirrors
+  ansible.builtin.include_tasks: '{{ ansible_os_family | lower }}.yml'

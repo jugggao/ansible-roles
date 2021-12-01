@@ -1,0 +1,18 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: mirrors-centos
+    image: docker.io/pycontribs/centos:7
+    privileged: true
+    pre_build_image: true
+  - name: mirrors-debian
+    image: docker.io/pycontribs/debian:latest
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

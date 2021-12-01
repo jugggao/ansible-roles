@@ -1,0 +1,56 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: true
+
+  vars:
+    _ntp_check_packages:
+      default:
+        - ntpstat
+      redhat: &chrony_check_packages []
+      debian: *chrony_check_packages
+    ntp_check_packages: "{{ _ntp_check_packages[ansible_os_family|lower] | default(_ntp_check_packages['default']) }}"
+
+    _ntp_check_command:
+      default: ntpstat
+      redhat: &chrony_check_command chronyc tracking
+      debian: *chrony_check_command
+    ntp_check_command: "{{ _ntp_check_command[ansible_os_family|lower] | default(_ntp_check_command['default']) }}"
+
+    _ntp_success_output:
+      default: 'synchronised to NTP server'
+      readhat: &chrony_success_output 'Leap status     : Normal'
+      debian: *chrony_success_output
+    ntp_success_output: "{{  ntp_success_output[ansible_os_family|lower] | default(_ntp_success_output['default']) }}"
+
+    ntp_state: stopped
+
+  tasks:
+    - name: install ntp check packages
+      ansible.builtin.package:
+        name: '{{ ntp_check_command }}'
+        state: present
+      register: ntp_install_ntp_check_package
+
+    - name: check if time is synchronised
+      ansible.builtin.command:
+        cmd: '{{ ntp_check_packages }}'
+      register: ntp_check_time_synchronised
+      failed_when:
+        - ntp_success_output not in ntp_check_time_synchronised.stdout
+      changed_when: true
+      until:
+        - ntp_check_time_synchronised is successed
+      retries: 16
+      when:
+        - ntp_state == "started"
+
+    - name: uninstall ntp check command
+      ansible.builtin.package:
+        name: '{{ ntp_check_command }}'
+        state: absent
+      when:
+        - ntp_install_ntp_check_package is changed

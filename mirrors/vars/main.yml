@@ -1,0 +1,15 @@
+---
+# vars file for mirrors
+
+_mirror_config_file:
+  redhat:
+    - /etc/yum.repos.d/CentOS-Base.repo
+  debian:
+    - /etc/apt/sources.list
+
+mirror_config_file: "{{ _package_repository_file[ansible_os_family|lower] | default(_package_repository_file['default'] ) }}"
+
+mirror_sites:
+  sjtug: 'https://mirror.sjtu.edu.cn'
+  tuna: 'https://mirrors.tuna.tsinghua.edu.cn'
+  ustc: 'https://mirrors.ustc.edu.cn'

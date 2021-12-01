@@ -1,0 +1,31 @@
+---
+# vars file for ntp
+
+_ntp_packages:
+  default:
+    - ntp
+  redhat: &chrony_packages
+    - chrony
+  debian: *chrony_packages
+
+ntp_packages: "{{ _ntp_packages[ansible_os_family|lower] | default(_ntp_packages['default'] ) }}"
+
+_ntp_configuration_file:
+  default: ntp.conf
+  redhat: &chrony_configuration_file chrony.conf
+  debian: *chrony_configuration_file
+
+ntp_configuration_file: "{{ _ntp_configuration_file[ansible_os_family|lower] | default(_ntp_configuration_file['default']) }}"
+
+_ntp_service:
+  default: ntpd
+  redhat: &chrony_service chronyd
+  debian: *chrony_service
+
+ntp_service: "{{ _ntp_service[ansible_os_family|lower] | default(_ntp_service['default']) }}"
+
+_ntp_timezone_packages:
+  default:
+    - tzdata
+
+ntp_timezone_packages: "{{ _ntp_timezone_packages[ansible_os_family|lower] | default(_ntp_timezone_packages['default']) }}"

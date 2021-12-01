@@ -1,0 +1,23 @@
+---
+# tasks file for httpd
+
+# - name: Load a variable file based on OS type
+#   ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+#   vars:
+#     params:
+#       files:
+#         - '{{ ansible_distribution | lower }}.yaml'
+#         - '{{ ansible_os_family | lower }}.yaml'
+#         - 'default.yaml'
+#       paths:
+#         - 'vars'
+
+# - name: Import assert.yml
+#   ansible.builtin.import_tasks: assert.yml
+#   run_once: true
+#   delegate_to: localhost
+
+- name: Ensure required packages are present
+  ansible.builtin.package:
+    name: '{{ httpd_packages }}'
+    state: present

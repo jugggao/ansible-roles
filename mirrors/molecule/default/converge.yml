@@ -1,0 +1,8 @@
+---
+- name: Converge
+  become: true
+  hosts: all
+  tasks:
+    - name: "Include mirrors"
+      include_role:
+        name: "mirrors"

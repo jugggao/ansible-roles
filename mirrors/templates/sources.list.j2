@@ -1,0 +1,10 @@
+deb {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }} main contrib non-free
+# deb-src {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }} main contrib non-free
+deb {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }}-updates main contrib non-free
+# deb-src {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }}-updates main contrib non-free
+
+deb {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }}-backports main contrib non-free
+# deb-src {{ mirror_sites[mirror_site] }}/debian/ {{ codename.stdout }}-backports main contrib non-free
+
+deb {{ mirror_sites[mirror_site] }}/debian-security {{ codename.stdout }}/updates main contrib non-free
+# deb-src {{ mirror_sites[mirror_site] }}/debian-security {{ codename.stdout }}/updates main contrib non-free

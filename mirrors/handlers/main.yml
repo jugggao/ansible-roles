@@ -1,0 +1,10 @@
+---
+# handlers file for mirrors
+
+- name: yum update cache
+  ansible.builtin.yum:
+    update_cache: true
+
+- name: apt update
+  ansible.builtin.apt:
+    update_cache: true

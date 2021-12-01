@@ -1,0 +1,40 @@
+---
+# vars file for httpd
+
+_httpd_packages:
+  redhat:
+    - httpd
+  debian:
+    - apache2
+  default:
+    - httpd
+
+httpd_packages: "{{ _httpd_packages[ansible_os_family|lower] | default(_httpd_packages['default'] ) }}"
+
+_httpd_ssl_packages:
+  default:
+    - mod_ssl
+    - openssl
+
+httpd_ssl_packages: "{{ _httpd_ssl_packages[ansible_os_family|lower] | default(_httpd_ssl_packages['default'] ) }}"
+
+_httpd_service:
+  redhat: httpd
+  debian: apache2
+  default: httpd
+
+httpd_service: "{{ _httpd_service[ansible_os_family|lower] | default(_httpd_service['default'] ) }}"
+
+_httpd_config_root:
+  redhat: /etc/httpd
+  debian: /etc/apache2
+  default: /etc/httpd
+
+httpd_config_root: "{{ _httpd_config_root[ansible_os_family|lower] | default(_httpd_config_root['default'] ) }}"
+
+_httpd_config_directory:
+  redhat: '{{ _httpd_config_root }}/config.d'
+  debian: '{{ httpd_server_root }}/conf-enabled'
+  default: '{{ _httpd_config_root }}/config.d'
+
+httpd_config_directory: "{{ _httpd_config_directory[ansible_os_family|lower] | default(_httpd_config_directory['default'] ) }}"

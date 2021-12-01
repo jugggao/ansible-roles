@@ -1,0 +1,5 @@
+---
+# defaults file for mirrors
+
+# Choose one from sjtug, tuna or ustc.
+mirror_site: tuna

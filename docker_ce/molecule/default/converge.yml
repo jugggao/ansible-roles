@@ -3,8 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
-
   tasks:
-    - name: 'Include ntp'
+    - name: 'Include docker_ce'
       include_role:
-        name: 'ntp'
+        name: 'docker_ce'

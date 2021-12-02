@@ -12,7 +12,7 @@ _docker_ce_dist:
   redhat: &redhat_dist rhel
 docker_ce_dist: "{{ _docker_ce_dist[ansible_distribution|lower] | default(_docker_ce_dist['default'] ) }}"
 
-docker_ce_yum_repositories: 'https://download.docker.com/linux/{{ docker_ce_dist }}/docker-ce.repo'
+docker_ce_yum_repositories: 'https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/{{ docker_ce_dist }}/docker-ce.repo'
 
 docker_ce_packages:
   - docker-ce

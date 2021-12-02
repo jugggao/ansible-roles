@@ -8,10 +8,18 @@
   when:
     - docker_ce_requirements | length
 
-- name: install docker-ce repository for yum
-  ansible.builtin.get_url:
-    url: '{{ docker_ce_yum_repositories }}'
-    dest: /etc/yum.repos.d/docker-ce.repo
+- block:
+    - name: install docker-ce repository for yum
+      ansible.builtin.get_url:
+        url: '{{ docker_ce_yum_repositories }}'
+        dest: /etc/yum.repos.d/docker-ce.repo
+        validate_certs: false
+
+    - name: replace docker-ce repository baseurl to tuna source
+      ansible.builtin.replace:
+        name: /etc/yum.repos.d/docker-ce.repo
+        regexp: 'download.docker.com'
+        replace: 'mirrors.tuna.tsinghua.edu.cn/docker-ce'
   when:
     - ansible_pkg_mgr in [ 'yum' ]
 

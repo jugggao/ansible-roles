@@ -1,0 +1,14 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: check docker-compose
+      ansible.builtin.command:
+        cmd: docker-compose --version
+      environment:
+        PATH: /bin:/usr/bin:/usr/local/bin
+      changed_when: false

@@ -2,9 +2,10 @@
 dependency:
   name: galaxy
 driver:
-  name: delegated
+  name: vagrant
 platforms:
-  - name: instance
+  - name: centos7
+    box: generic/centos7
 provisioner:
   name: ansible
 verifier:

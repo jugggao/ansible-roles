@@ -28,7 +28,7 @@
   community.general.timezone:
     name: '{{ ntp_timezone }}'
 
-- name: manage {{ ntp_serivce }}
+- name: "manage {{ ntp_serivce }}"
   ansible.builtin.service:
     name: '{{ ntp_service }}'
     state: '{{ ntp_state }}'

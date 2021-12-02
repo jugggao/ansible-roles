@@ -26,7 +26,7 @@
       debian: *chrony_success_output
     ntp_success_output: "{{  ntp_success_output[ansible_os_family|lower] | default(_ntp_success_output['default']) }}"
 
-    ntp_state: stopped
+    ntp_state: started
 
   tasks:
     - name: install ntp check packages

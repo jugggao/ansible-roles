@@ -1,0 +1,24 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: install pip
+      ansible.builtin.package:
+        name: python-pip
+        state: present
+    - name: install pip docker
+      ansible.builtin.pip:
+        name:
+          - docker<5.0.0
+          - websocket-client==0.32.0
+        # extra_args: -i https://pypi.tuna.tsinghua.edu.cn/simple
+        state: present
+    - name: create a container
+      ansible.builtin.docker_container:
+        name: nginx
+        image: cr.ambow.com/docker.io/nginx:1.14.2

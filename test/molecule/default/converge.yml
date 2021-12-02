@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include docker"
+    - name: "Include test"
       include_role:
-        name: "docker"
+        name: "test"

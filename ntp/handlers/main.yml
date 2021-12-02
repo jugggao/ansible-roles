@@ -3,7 +3,7 @@
 
 - name: restart ntp
   ansible.builtin.service:
-    name: '{{ ntp_serivce }}'
+    name: '{{ ntp_service }}'
     state: restarted
   when:
     - not ansible_check_mode | bool

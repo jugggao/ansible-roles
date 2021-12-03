@@ -2,6 +2,7 @@
 # vars file for mirrors
 
 _mirror_config_file:
+  default: []
   redhat:
     - /etc/yum.repos.d/CentOS-Base.repo
   debian:
